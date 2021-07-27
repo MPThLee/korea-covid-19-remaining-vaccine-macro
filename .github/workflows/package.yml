@@ -30,7 +30,21 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install pytest
         python -m pip install -r requirements.txt
-        python -m pip install pyinstaller==4.3
+        
+    - name: Checkout Pyinstaller
+      uses: actions/checkout@v2
+      with:
+        repository: pyinstaller/pyinstaller
+        ref: v4.3
+        path: pyinstaller
+  
+    - name: Build and Install Pyinstaller with own bootstrap
+      run: |
+        cd pyinstaller/bootloader
+        python waf distclean all
+        cd ..
+        python -m pip install .
+        cd ..
   
     - name: Make OneFile
       run: |
